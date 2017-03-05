@@ -114,7 +114,10 @@ class DB
                 foreach ($this->parameters as $param => $value) {
 
                     $type = PDO::PARAM_STR;
+
                     switch ($value[1]) {
+                        case "":
+                            break;
                         case is_int($value[1]):
                             $type = PDO::PARAM_INT;
                             break;
@@ -125,6 +128,7 @@ class DB
                             $type = PDO::PARAM_NULL;
                             break;
                     }
+
                     // Add type when binding the values to the column
                     $this->sQuery->bindValue($value[0], $value[1], $type);
                 }
@@ -168,6 +172,7 @@ class DB
     {
         if (empty($this->parameters) && is_array($parray)) {
             $columns = array_keys($parray);
+
             foreach ($columns as $i => &$column) {
                 $this->bind($column, $parray[$column]);
             }
